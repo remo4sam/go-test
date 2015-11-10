@@ -1,53 +1,48 @@
 package main
 
 import (
-    "fmt"
-    "log"
-    "net/http"
-    "encoding/json"
-    "time"
-    "github.com/gorilla/mux"
+	"encoding/json"
+	"fmt"
+	"github.com/gorilla/mux"
+	"log"
+	"net/http"
+	"time"
 )
 
-
-func Index(w http.ResponseWriter, r *http.Request){
-  fmt.Fprintf(w, "Welcome !!")
+func Index(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome !!")
 }
 
-func TodoIndex(w http.ResponseWriter, r *http.Request)  {
-  todos := Todos{
-        Todo{Name: "Write presentation"},
-        Todo{Name: "Host meetup"},
-    }
+func TodoIndex(w http.ResponseWriter, r *http.Request) {
+	todos := Todos{
+		Todo{Name: "Write presentation"},
+		Todo{Name: "Host meetup"},
+	}
 
-    json.NewEncoder(w).Encode(todos)
+	json.NewEncoder(w).Encode(todos)
 }
 
 func TodoShow(w http.ResponseWriter, r *http.Request) {
-    vars := mux.Vars(r)
-    todoId := vars["todoId"]
-    fmt.Fprintln(w, "Todo show:", todoId)
+	vars := mux.Vars(r)
+	todoId := vars["todoId"]
+	fmt.Fprintln(w, "Todo show:", todoId)
 }
-
 
 func main() {
 
-    router := mux.NewRouter().StrictSlash(true)
-    router.HandleFunc("/", Index)
-    router.HandleFunc("/todos", TodoIndex)
-    router.HandleFunc("/todos/{todoId}", TodoShow)
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/", Index)
+	router.HandleFunc("/todos", TodoIndex)
+	router.HandleFunc("/todos/{todoId}", TodoShow)
 
-
-    log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":5000", router))
 
 }
 
-
-
-type Todo struct{
-  Name      string `json:"name"`
-  Completed bool    `json:"completed"`
-  Due       time.Time `json:"due"`
+type Todo struct {
+	Name      string    `json:"name"`
+	Completed bool      `json:"completed"`
+	Due       time.Time `json:"due"`
 }
 
 type Todos []Todo
