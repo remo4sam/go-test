@@ -31,9 +31,9 @@ func TodoShow(w http.ResponseWriter, r *http.Request) {
 func main() {
 
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/", Index)
-	router.HandleFunc("/todos", TodoIndex)
-	router.HandleFunc("/todos/{todoId}", TodoShow)
+	router.HandleFunc("/api/", Index)
+	router.HandleFunc("/api/todos", TodoIndex)
+	router.HandleFunc("/api/todos/{todoId}", TodoShow)
 
 	log.Fatal(http.ListenAndServe(":5000", router))
 
